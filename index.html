@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zayvoria Mart - Seller & Shopping Platform</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f5f5f5;
+    }
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    main {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 1rem;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    section {
+      background: white;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      flex: 1 1 350px;
+      min-width: 320px;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input[type=text], input[type=number], input[type=email], textarea {
+      width: 100%;
+      padding: 6px;
+      margin-top: 4px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    input[type=file] {
+      margin-top: 6px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #2980b9;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    button:hover {
+      background-color: #1c5980;
+    }
+    .product-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+      gap: 15px;
+    }
+    .product-card {
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 10px;
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .product-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+      color: #333;
+    }
+    .product-desc {
+      font-size: 0.9rem;
+      color: #666;
+      flex-grow: 1;
+    }
+    .product-price {
+      font-weight: bold;
+      margin: 10px 0;
+      color: #27ae60;
+    }
+    .add-cart-btn {
+      background-color: #27ae60;
+      border: none;
+      color: white;
+      padding: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .add-cart-btn:hover {
+      background-color: #1e8449;
+    }
+    .product-image {
+      width: 100%;
+      height: 140px;
+      object-fit: contain;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #fafafa;
+    }
+    #cart {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+    .cart-item span {
+      font-weight: 600;
+    }
+    .remove-btn {
+      background: #c0392b;
+      border: none;
+      color: white;
+      padding: 2px 8px;
+      cursor: pointer;
+      border-radius: 3px;
+      font-size: 0.8rem;
+    }
+    .remove-btn:hover {
+      background: #992d22;
+    }
+    footer {
+      text-align: center;
+      margin: 40px 0 20px;
+      color: #777;
+    }
+    #message-form {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Zayvoria Mart</h1>
+    <p>Seller & Shopping Platform</p>
+  </header>
+  <main>
+    <section id="seller-section">
+      <h2>Seller: Add Product</h2>
+      <form id="product-form">
+        <label for="product-name">Product Name</label>
+        <input type="text" id="product-name" required placeholder="Enter product name" />
+
+        <label for="product-price">Price (in $)</label>
+        <input type="number" id="product-price" min="0" step="0.01" required placeholder="Enter product price" />
+
+        <label for="product-desc">Description</label>
+        <textarea id="product-desc" rows="3" placeholder="Enter product description"></textarea>
+
+        <label for="product-image">Product Image</label>
+        <input type="file" id="product-image" accept="image/*" />
+
+        <button type="submit">Add Product</button>
+      </form>
+    </section>
+
+    <section id="products-section">
+      <h2>Products</h2>
+      <div class="product-list" id="product-list">
+        <!-- Products will appear here -->
+      </div>
+    </section>
+
+    <section id="cart-section">
+      <h2>Shopping Cart</h2>
+      <div id="cart">
+        <p>No items in cart.</p>
+      </div>
+      <h3>Total: $<span id="cart-total">0.00</span></h3>
+      <button id="clear-cart-btn" style="background:#e67e22;">Clear Cart</button>
+
+      <!-- Buyer message form -->
+      <h2>Contact Seller</h2>
+      <form id="message-form">
+        <label for="buyer-name">Your Name</label>
+        <input type="text" id="buyer-name" required placeholder="Enter your name" />
+
+        <label for="buyer-email">Your Email</label>
+        <input type="email" id="buyer-email" required placeholder="Enter your email" />
+
+        <label for="buyer-message">Message</label>
+        <textarea id="buyer-message" rows="4" required placeholder="Write your message here"></textarea>
+
+        <button type="submit">Send Message & Cart</button>
+      </form>
+      <p id="form-status" style="color:green; font-weight:bold;"></p>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Zayvoria Mart
+  </footer>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.emailjs.com/sdk/3.11/email.min.js"></script>
+  <script>
+    // Initialize EmailJS with your user ID
+    emailjs.init("YOUR_EMAILJS_USER_ID"); // <-- Replace with your EmailJS user ID
+
+    let products = [];
+    let cart = [];
+
+    const productForm = document.getElementById('product-form');
+    const productList = document.getElementById('product-list');
+    const cartDiv = document.getElementById('cart');
+    const cartTotalSpan = document.getElementById('cart-total');
+    const clearCartBtn = document.getElementById('clear-cart-btn');
+
+    // Load products from localStorage on page load
+    loadProductsFromStorage();
+    renderProducts();
+
+    productForm.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const name = document.getElementById('product-name').value.trim();
+      const price = parseFloat(document.getElementById('product-price').value);
+      const description = document.getElementById('product-desc').value.trim();
+      const imageFile = document.getElementById('product-image').files[0];
+
+      if (name === '' || isNaN(price) || price < 0) {
+        alert('Please enter valid product name and price.');
+        return;
+      }
+
+      if (imageFile) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const imageData = event.target.result; // base64 string
+          addProduct(name, price, description, imageData);
+          saveProductsToStorage();  // Save after add
+        }
+        reader.readAsDataURL(imageFile);
+      } else {
+        addProduct(name, price, description, null);
+        saveProductsToStorage(); // Save after add
+      }
+
+      productForm.reset();
+    });
+
+    function addProduct(name, price, description, imageData) {
+      products.push({ name, price, description, imageData });
+      renderProducts();
+    }
+
+    function renderProducts() {
+      productList.innerHTML = '';
+      if (products.length === 0) {
+        productList.innerHTML = '<p>No products added yet.</p>';
+        return;
+      }
+      products.forEach((product, index) => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+
+        card.innerHTML = `
+          ${product.imageData ? `<img src="${product.imageData}" alt="${product.name}" class="product-image" />` : ''}
+          <h3>${product.name}</h3>
+          <p class="product-desc">${product.description || 'No description.'}</p>
+          <p class="product-price">$${product.price.toFixed(2)}</p>
+          <button class="add-cart-btn" data-index="${index}">Add to Cart</button>
+        `;
+        productList.appendChild(card);
+      });
+
+      document.querySelectorAll('.add-cart-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt(btn.getAttribute('data-index'));
+          addToCart(idx);
+        });
+      });
+    }
+
+    function addToCart(productIndex) {
+      const product = products[productIndex];
+      const cartItemIndex = cart.findIndex(item => item.name === product.name);
+      if (cartItemIndex > -1) {
+        cart[cartItemIndex].quantity++;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+      renderCart();
+    }
+
+    function renderCart() {
+      if (cart.length === 0) {
+        cartDiv.innerHTML = '<p>No items in cart.</p>';
+        cartTotalSpan.textContent = '0.00';
+        return;
+      }
+      cartDiv.innerHTML = '';
+      let total = 0;
+      cart.forEach((item, idx) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'cart-item';
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        itemDiv.innerHTML = `
+          <span>${item.name} x${item.quantity}</span>
+          <span>$${itemTotal.toFixed(2)}</span>
+          <button class="remove-btn" data-idx="${idx}">Remove</button>
+        `;
+        cartDiv.appendChild(itemDiv);
+      });
+      cartTotalSpan.textContent = total.toFixed(2);
+
+      document.querySelectorAll('.remove-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt(btn.getAttribute('data-idx'));
+          removeFromCart(idx);
+        });
+      });
+    }
+
+    function removeFromCart(index) {
+      if (cart[index].quantity > 1) {
+        cart[index].quantity--;
+      } else {
+        cart.splice(index, 1);
+      }
+      renderCart();
+    }
+
+    clearCartBtn.addEventListener('click', () => {
+      if (cart.length === 0) {
+        alert("Cart is already empty.");
+        return;
+      }
+      if (confirm("Are you sure you want to clear the cart?")) {
+        cart = [];
+        renderCart();
+      }
+    });
+
+    // Save/load products from localStorage
+    function saveProductsToStorage() {
+      localStorage.setItem('zayvoria_products', JSON.stringify(products));
+    }
+
+    function loadProductsFromStorage() {
+      const data = localStorage.getItem('zayvoria_products');
+      if (data) {
+        products = JSON.parse(data);
+      }
+    }
+
+    // Buyer message form and email sending with EmailJS
+    const messageForm = document.getElementById('message-form');
+    const formStatus = document.getElementById('form-status');
+
+    messageForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      if (cart.length === 0) {
+        alert("Your cart is empty! Please add products before sending a message.");
+        return;
+      }
+
+      const buyerName = document.getElementById('buyer-name').value.trim();
+      const buyerEmail = document.getElementById('buyer-email').value.trim();
+      const buyerMessage = document.getElementById('buyer-message').value.trim();
+
+      if (!buyerName || !buyerEmail || !buyerMessage) {
+        alert("Please fill in all message fields.");
+        return;
+      }
+
+      let cartDetails = "";
+      cart.forEach(item => {
+        cartDetails += `${item.name} x${item.quantity} = $${(item.price * item.quantity).toFixed(2)}\n`;
+      });
+      const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+      const emailParams = {
+        to_email: 'ziauli784@gmail.com', // Your receiving email
+        from_name: buyerName,
+        from_email: buyerEmail,
+        message: buyerMessage,
+        cart: cartDetails,
+        total: totalPrice.toFixed(2),
+      };
+
+      emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', emailParams)
+        .then(() => {
+          formStatus.style.color = 'green';
+          formStatus.textContent = "Message & Cart sent successfully! We will contact you soon.";
+          messageForm.reset();
+          cart = [];
+          renderCart();
+        })
+        .catch(err => {
+          formStatus.style.color = 'red';
+          formStatus.textContent = "Failed to send message. Please try again later.";
+          console.error("EmailJS error:", err);
+        });
+    });
+  </script>
+</body>
+</html>
